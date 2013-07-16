@@ -1,0 +1,9 @@
+{application, syslog_pipeline_riemann_emitter, [
+  {id, "syslog_pipeline_riemann_emitter"},
+  {description, "Riemann emitter for syslog-pipeline"},
+  {vsn, "0.1.0"},
+  {registered, [syslog_pipeline_riemann_emitter_sup]},
+  {applications, [kernel, stdlib]},
+  {mod, { syslog_pipeline_riemann_emitter_app, []}},
+  {env, []}
+]}.
