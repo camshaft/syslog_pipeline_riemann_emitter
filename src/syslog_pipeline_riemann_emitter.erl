@@ -9,6 +9,7 @@
 -define (POOL, riemann_pool).
 
 start_link(Host, Port) ->
+  application:start(pooler),
   application:set_env(riemann, host, Host),
   application:set_env(riemann, port, Port),
   pooler:new_pool([
