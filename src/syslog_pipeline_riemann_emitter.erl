@@ -41,7 +41,7 @@ format_event({{_Priority, _Version, DateTime, Hostname, _AppName, _ProcID, _Mess
     {service, Service},
     {host, Hostname},
     {metric, Metric},
-    {ttl, 60},
+    {ttl, 360},
     {tags, Tags}
   ].
 
