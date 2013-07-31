@@ -34,13 +34,15 @@ format_event({{_Priority, _Version, DateTime, Hostname, _AppName, _ProcID, _Mess
   Timestamp = format_time(DateTime),
   Service = proplists:get_value(<<"measure">>, Parsed),
   Val = proplists:get_value(<<"val">>, Parsed, <<"0">>),
+  Tags = proplists:get_value(<<"tags">>, Parsed, []),
   Metric = binary_to_number(Val),
   [
     {time, Timestamp},
     {service, Service},
     {host, Hostname},
     {metric, Metric},
-    {ttl, 60}
+    {ttl, 60},
+    {tags, Tags}
   ].
 
 format_time(DateTime) ->
