@@ -32,7 +32,7 @@ send(Events) ->
 
   Result.
 
-format_event({{_Priority, _Version, DateTime, Hostname, AppName, _ProcID, _MessageID, _Message}, Parsed}) ->
+format_event({{_Priority, _Version, DateTime, Hostname, AppName, ProcID, _MessageID, _Message}, Parsed}) ->
   Timestamp = format_time(DateTime),
   Service = proplists:get_value(<<"measure">>, Parsed),
   Val = proplists:get_value(<<"val">>, Parsed, <<"0">>),
@@ -41,10 +41,10 @@ format_event({{_Priority, _Version, DateTime, Hostname, AppName, _ProcID, _Messa
   [
     {time, Timestamp},
     {service, Service},
-    {host, <<Hostname/binary, ".", AppName/binary>>},
+    {host, <<ProcID/binary, ".", Hostname/binary>>},
     {metric, Metric},
     {ttl, 360},
-    {tags, [Hostname|Tags]}
+    {tags, [ProcID,AppName,Hostname|Tags]}
   ].
 
 format_time(DateTime) ->
