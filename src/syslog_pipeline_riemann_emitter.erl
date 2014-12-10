@@ -19,6 +19,8 @@ start_link(Host, Port) ->
     {start_mfa, {gen_server, start_link, [riemann, [], []]}}
   ]).
 
+send([]) ->
+  ok;
 send(Events) ->
   Conn = pooler:take_member(?POOL),
 
@@ -30,7 +32,7 @@ send(Events) ->
 
   Result.
 
-format_event({{_Priority, _Version, DateTime, Hostname, _AppName, _ProcID, _MessageID, _Message}, Parsed}) ->
+format_event({{_Priority, _Version, DateTime, Hostname, AppName, _ProcID, _MessageID, _Message}, Parsed}) ->
   Timestamp = format_time(DateTime),
   Service = proplists:get_value(<<"measure">>, Parsed),
   Val = proplists:get_value(<<"val">>, Parsed, <<"0">>),
@@ -39,10 +41,10 @@ format_event({{_Priority, _Version, DateTime, Hostname, _AppName, _ProcID, _Mess
   [
     {time, Timestamp},
     {service, Service},
-    {host, Hostname},
+    {host, <<Hostname/binary, ".", AppName/binary>>},
     {metric, Metric},
     {ttl, 360},
-    {tags, Tags}
+    {tags, [Hostname|Tags]}
   ].
 
 format_time(DateTime) ->
