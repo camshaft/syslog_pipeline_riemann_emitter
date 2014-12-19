@@ -37,7 +37,7 @@ format_event({{_Priority, _Version, DateTime, Hostname, AppName, ProcID, _Messag
   Service = proplists:get_value(<<"measure">>, Parsed),
   Val = proplists:get_value(<<"val">>, Parsed, <<"0">>),
   Tags = proplists:get_value(<<"tags">>, Parsed, []),
-  Metric = binary_to_number(Val),
+  Metric = to_number(Val),
   [
     {time, Timestamp},
     {service, Service},
@@ -50,7 +50,9 @@ format_event({{_Priority, _Version, DateTime, Hostname, AppName, ProcID, _Messag
 format_time(DateTime) ->
   calendar:datetime_to_gregorian_seconds(DateTime) - 62167219200.
 
-binary_to_number(Bin)->
+to_number(Num) when is_integer(Num) orelse is_float(Num) ->
+  Num;
+to_number(Bin)->
   case catch binary_to_float(Bin) of
     N when is_float(N) -> N;
     _ ->
