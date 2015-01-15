@@ -41,7 +41,7 @@ format_event({{_Priority, _Version, DateTime, Hostname, AppName, ProcID, _Messag
   [
     {time, Timestamp},
     {service, Service},
-    {host, <<ProcID/binary, ".", Hostname/binary>>},
+    {host, <<Hostname/binary, ".", ProcID/binary>>},
     {metric, Metric},
     {ttl, 360},
     {tags, [ProcID,AppName,Hostname|Tags]}
